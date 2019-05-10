@@ -1,0 +1,23 @@
+create database cpslima_consultacolegiados
+
+create table ALUMNO (
+id int primary key auto_increment,
+nombre varchar(10)
+)
+
+
+ DELIMITER //
+ CREATE PROCEDURE V_Alumnos()
+   BEGIN
+   SELECT *  FROM alumno;
+   END //
+ DELIMITER ;
+ 
+ 
+  DELIMITER //
+ CREATE OR REPLACE PROCEDURE S_Alumnos(IN parametro varchar(20))
+   BEGIN
+   SELECT *  FROM alumno where id LIKE '%@parametro%';
+   END //
+ DELIMITER ;
+ 
