@@ -1,9 +1,9 @@
 <?php 
 
-define('SERVER','localhost');
-define('DB','cpslima_consultacolegiados');
-define('USER','root');
-define('PASS','');
+define('SERVER','allcommerceperu.com');
+define('DB','allcomme_comprarapida');
+define('USER','allcomme_marcos');
+define('PASS','marquitosxD');
 define('SGBD','mysql:host='.SERVER.";dbname=".DB);
 
 ?>
