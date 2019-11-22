@@ -2,10 +2,23 @@
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
-$app = new \Slim\App;
+$c = new \Slim\Container();
+$c['errorHandler'] = function ($c){
+    return function ($request, $response, $exception) use ($c){
+        $error = array('error'=> $exception->getMessage());
+        return $c['response']
+        ->withStatus(500)
+        ->withHeader('Content-Type','application/json')
+        ->write(json_encode($error));
+    };
+};
 
-//GET
-$app->get('/api/colegiados', function(Request $request, Response $response){
+
+
+
+$app = new \Slim\App($c);
+
+$app->get('/api/colegiados', function(Request $request, Response $response, $args){
     
     try{
         $db = new db();
@@ -14,7 +27,7 @@ $app->get('/api/colegiados', function(Request $request, Response $response){
         $result->execute();
         if($result->rowCount()>0){
         $colegiados=$result->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($colegiados);
+        echo $json = json_encode($colegiados);
         }else{
             echo json_encode("No existen registros");
         }
@@ -25,7 +38,8 @@ $app->get('/api/colegiados', function(Request $request, Response $response){
 
 });
 
-$app->get('/api/colegiados/{param}', function(Request $request, Response $response){
+$app->get('/api/colegiados/{param}', function(Request $request, Response $response,$args){
+
     $param = $request->getAttribute('param');
     try{
         $db = new db();
@@ -64,7 +78,7 @@ $app->get('/api/colegiados/{param}', function(Request $request, Response $respon
 
 });
 
-$app->get('/api/codalumno/{param}', function(Request $request, Response $response){
+$app->get('/api/codalumno/{param}', function(Request $request, Response $response, $args){
     $param = $request->getAttribute('param');
     try{
         $db = new db();
@@ -87,12 +101,12 @@ $app->get('/api/codalumno/{param}', function(Request $request, Response $respons
 
 });
 
-$app->get('/api/codalumno_colegiados/{param}', function(Request $request, Response $response){
+$app->get('/api/codalumno_colegiados/{param}', function(Request $request, Response $response, $args){
     $param = $request->getAttribute('param');
     try{
         $db = new db();
         $db=$db->conectar();
-        $result = $db->prepare("CALL consulta_colegiados({$param})");
+        $result = $db->prepare("CALL consulta_colegiadosnuevo({$param})");
         $result->execute();
         if($result->rowCount()>0){
         $colegiados=$result->fetchAll(PDO::FETCH_ASSOC);
