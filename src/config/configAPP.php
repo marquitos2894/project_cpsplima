@@ -1,5 +1,4 @@
 <?php 
-
 define('SERVER','allcommerceperu.com');
 define('DB','allcomme_comprarapida');
 define('USER','allcomme_marcos');
